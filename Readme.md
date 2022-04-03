@@ -2,7 +2,8 @@
 
 Option Headging Stategy With DowJones and S&P500 By Buying Calls and Puts
 
-Ticker VTI SPY
+Ticker DIA SPY
+Ticker EEM SPY
 
 Buy Options Here:
 https://ibkr.com/referral/zhenwei375

@@ -25,14 +25,14 @@ def Alert(message):
 
 def CheckCloseHeadge():
     changeDict = GetChange()
-    vtiChange = changeDict["VTI"]
+    diaChange = changeDict["DIA"]
     spyChange = changeDict["SPY"]
     
-    message = "vtiChange: " + str(vtiChange) + "\n" + "spyChange: " + str(spyChange)
+    message = "diaChange: " + str(diaChange) + "\n" + "spyChange: " + str(spyChange)
     # Alert(message)
-    if vtiChange >= spyChange:
+    if diaChange >= spyChange:
         Alert(message)
-        Alert('Close Headge VTI SPY')
+        Alert('Close Headge DIA SPY')
 
 print ("starting...")
 # rt = RepeatedTimer(1, CheckCloseHeadge) # it auto-starts, no need of rt.start()

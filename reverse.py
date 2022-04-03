@@ -1,7 +1,7 @@
 import requests
 import sys
 sys.path.append('.')
-from modules.aiztradingview import GetGap
+from modules.aiztradingview import GetChange
 from modules.timer import RepeatedTimer
 from time import sleep
 import time
@@ -25,22 +25,14 @@ def Alert(message):
 
 def CheckCloseHeadge():
     changeDict = GetChange()
-    vtiChange = changeDict["VTI"]
+    diaChange = changeDict["DIA"]
     spyChange = changeDict["SPY"]
     
-    message = "vtiChange: " + str(vtiChange) + "\n" + "spyChange: " + str(spyChange)
-    if vtiChange >= spyChange:
+    message = "diaChange: " + str(diaChange) + "\n" + "spyChange: " + str(spyChange)
+    # Alert(message)
+    if diaChange <= spyChange:
         Alert(message)
-
-def CheckGap():
-    changeDict = GetGap()
-    vtiGap = changeDict["VTI"]
-    spyGap = changeDict["SPY"]
-    
-    message = "vtiGap: " + str(vtiGap) + "\n" + "spyGap: " + str(spyGap)
-    Alert(message)
-    if vtiGap < spyGap:
-        Alert('VTIGap < SPYGap')
+        Alert('Close Headge DIA SPY')
 
 print ("starting...")
 # rt = RepeatedTimer(1, CheckCloseHeadge) # it auto-starts, no need of rt.start()
@@ -52,5 +44,5 @@ print ("starting...")
 starttime = time.time()
 while True:
     print("tick")
-    CheckGap()
+    CheckCloseHeadge()
     time.sleep(60.0 - ((time.time() - starttime) % 60.0))

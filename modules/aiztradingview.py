@@ -57,7 +57,7 @@ def GetChange():
                 {"left":"exchange","operation":"in_range","right":["AMEX","NASDAQ","NYSE"]},
             ], 
             "options":{"lang":"en"},
-            "symbols":{"query":{"types":[]},"tickers":[]},"columns":["gap","change"],"sort":{"sortBy":"average_volume_90d_calc","sortOrder":"desc"}
+            "symbols":{"query":{"types":[]},"tickers":[]},"columns":["change"],"sort":{"sortBy":"average_volume_90d_calc","sortOrder":"desc"}
         },
         parse=True
     )
@@ -69,11 +69,38 @@ def GetChange():
     attrDict = {}
     for d in data:
         symbol = d['s'].split(":")[1]
-        if symbol == "VTI" or symbol == "SPY":
+        if symbol == "DIA" or symbol == "SPY":
             change = d['d'][0]
             attrDict[symbol] = change
             
     return attrDict
+    
+def GetSPY():
+    page_parsed = http_request_post(
+        url=SCANNER_URL ,
+        data= {
+            "filter":[
+                {"left":"name","operation":"nempty"},
+                {"left":"type","operation":"equal","right":"fund"},
+                {"left":"exchange","operation":"in_range","right":["AMEX","NASDAQ","NYSE"]},
+            ], 
+            "options":{"lang":"en"},
+            "symbols":{"query":{"types":[]},"tickers":[]},"columns":["close"],"sort":{"sortBy":"average_volume_90d_calc","sortOrder":"desc"}
+        },
+        parse=True
+    )
+    data, url = page_parsed
+
+    data = json.loads(data.text)
+    data = data['data']
+
+    attrDict = {}
+    for d in data:
+        symbol = d['s'].split(":")[1]
+        if symbol == "SPY":
+            last = d['d'][0]
+            
+    return last
 
 def GetGap():
     page_parsed = http_request_post(
@@ -85,7 +112,7 @@ def GetGap():
                 {"left":"exchange","operation":"in_range","right":["AMEX","NASDAQ","NYSE"]},
             ], 
             "options":{"lang":"en"},
-            "symbols":{"query":{"types":[]},"tickers":[]},"columns":["gap","change"],"sort":{"sortBy":"average_volume_90d_calc","sortOrder":"desc"}
+            "symbols":{"query":{"types":[]},"tickers":[]},"columns":["gap"],"sort":{"sortBy":"average_volume_90d_calc","sortOrder":"desc"}
         },
         parse=True
     )
@@ -97,8 +124,36 @@ def GetGap():
     attrDict = {}
     for d in data:
         symbol = d['s'].split(":")[1]
-        if symbol == "VTI" or symbol == "SPY":
-            change = d['d'][0]
-            attrDict[symbol] = change
+        if symbol == "DIA" or symbol == "SPY":
+            gap = d['d'][0]
+            attrDict[symbol] = gap
+            
+    return attrDict
+
+def GetClose():
+    page_parsed = http_request_post(
+        url=SCANNER_URL ,
+        data= {
+            "filter":[
+                {"left":"name","operation":"nempty"},
+                {"left":"type","operation":"equal","right":"fund"},
+                {"left":"exchange","operation":"in_range","right":["AMEX","NASDAQ","NYSE"]},
+            ], 
+            "options":{"lang":"en"},
+            "symbols":{"query":{"types":[]},"tickers":[]},"columns":["close"],"sort":{"sortBy":"average_volume_90d_calc","sortOrder":"desc"}
+        },
+        parse=True
+    )
+    data, url = page_parsed
+
+    data = json.loads(data.text)
+    data = data['data']
+
+    attrDict = {}
+    for d in data:
+        symbol = d['s'].split(":")[1]
+        if symbol == "DIA" or symbol == "SPY":
+            last = d['d'][0]
+            attrDict[symbol] = last
             
     return attrDict
